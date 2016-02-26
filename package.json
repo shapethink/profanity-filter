@@ -1,0 +1,31 @@
+{
+  "name": "@threadmetal/profanity-filter",
+  "private": true,
+  "version": "0.0.0",
+  "description": "a simple transform to replace profanity in a text",
+  "main": "index.js",
+  "scripts": {
+    "start": "echo 'This package is a library. Try `npm test` :-)'",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/threadmetal/profanity-filter.git"
+  },
+  "keywords": [
+    "profanity",
+    "filter"
+  ],
+  "author": "Robert M. Koch <threadmetal@gmail.com>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/threadmetal/profanity-filter/issues"
+  },
+  "homepage": "https://github.com/threadmetal/profanity-filter#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coffee-script": "^1.10.0",
+    "groc": "^0.8.0",
+    "mocha": "^2.4.5"
+  }
+}
