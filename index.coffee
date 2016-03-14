@@ -1,8 +1,8 @@
 module.exports = class ProfanityFilter
 	constructor: (config) ->
 		defaults =
-			matchers: []
-			replace: "%"
+			matchers: [] # bring your own profanity
+			replace: "%" # percent: not as cool as asterisk
 		Object.assign @, defaults, config
 
 	transform: (text) ->
