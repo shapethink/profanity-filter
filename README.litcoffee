@@ -3,23 +3,32 @@ a simple transform to replace profanity in a text
 
 ### Getting Started
 
-This section describes a number of shorthands used later. You can safely skip it unless you're interested.
+This section describes a number of external concepts and some syntax sugar to make later sections more readable.
 
+	# look in package.json for package info
 	PKG = require "./package"
 
-	# pull a repo name from a *.git URL
+	# how to pull a repo name from a *.git URL
 	repo_name = (origin_url) ->
 		path.basename origin_url, ".git"
 
 	# change working directory
 	cd = process.chdir
 
-	unimplemented = () -> throw new Error "DIY :-)"
-	git = clone: unimplemented
-	npm = link: unimplemented
+	# shell commands
+	exec = (msg) ->
+		throw new Error "exec: #{msg} -- DIY :-)"
 
+	git = clone: (repo_url) ->
+		exec "git clone #{repo_url}"
+
+	npm = link: () -> exec "npm link"
+
+	# test asserter
 	should = require("chai").should()
-	ProfanityFilter = require PKG.name
+
+	# unit under test
+	ProfanityFilter = require "."
 
 Now that those ideas are nicely nailed down, we can proceed with...
 
@@ -47,7 +56,7 @@ This `README` is also a module written in [Literate CoffeeScript]. Among other n
 				.transform "a bad BAD word"
 				.should.equal "a bad BAD word"
 
-		"define: profanity": ->
+		"changing profanity list": ->
 			filter = new ProfanityFilter
 			filter.matchers.push /BAD/ig
 			filter.transform "a bad BAD word"
@@ -75,21 +84,28 @@ This `README` is also a module written in [Literate CoffeeScript]. Among other n
 
 Don't forget the regex flags you need! For example:
 
-		"with regex flags": ->
-			new ProfanityFilter matchers: [/bad/gi]
-				.transform "a bad bad BAD BAD word"
-				.should.equal "a %%% %%% %%% %%% word"
+		"with regex flags":
+			gi: ->
+				new ProfanityFilter matchers: [/BAD/gi]
+					.transform "a bad bad BAD BAD word"
+					.should.equal "a %%% %%% %%% %%% word"
 
 So, you probably want both flags -- but otherwise:
 
-		"without regex flags": ->
-			new ProfanityFilter matchers: [/BAD/i]
-				.transform "a bad bad BAD BAD word"
-				.should.equal "a %%% bad BAD BAD word"
+			i: ->
+				new ProfanityFilter matchers: [/BAD/i]
+					.transform "a bad bad BAD BAD word"
+					.should.equal "a %%% bad BAD BAD word"
 
-			new ProfanityFilter matchers: [/BAD/g]
-				.transform "a bad bad BAD BAD word"
-				.should.equal "a bad bad %%% %%% word"
+			g: ->
+				new ProfanityFilter matchers: [/BAD/g]
+					.transform "a bad bad BAD BAD word"
+					.should.equal "a bad bad %%% %%% word"
+
+			"(none)": ->
+				new ProfanityFilter matchers: [/BAD/]
+					.transform "a bad bad BAD BAD word"
+					.should.equal "a bad bad %%% BAD word"
 
 ## Gratitude
 
